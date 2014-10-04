@@ -1,0 +1,212 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link href="font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+body
+{
+	z-index: 0;
+}
+	#audio
+	{
+		position: fixed;
+		top: -100px;
+		width: 500px;
+		height: 100px;
+		left: 450px;
+		background-color: 000000;
+		z-index: 1;
+	}
+	#inner
+	{
+		position: absolute;
+		background-color: ddddd0;
+		top: 50px;
+		width: 500px;
+		height: 50px;
+		z-index: 1;
+	}
+
+	#timeline{
+	width: 500px;
+	height: 10px;
+	background: #000000;
+	float: left;
+	border-radius: 15px;
+	margin-top: 3px;
+	z-index: 1;
+	cursor: pointer;
+}
+ 
+#playhead{
+	position: relative;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	margin-top: 1px;
+	background-color: ddddd0;
+	z-index: 1;
+}
+
+#header {
+    position: fixed; 
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: 340px;
+    z-index: 10;
+    background: #fce;
+    z-index: 1;
+}
+
+#play-icon
+{
+	display: block;
+	position: absolute;
+	left: 226px;
+	margin-left: 10px;
+	margin-top: 15px;
+}
+
+#pause-icon
+{
+	display: none;
+	position: absolute;
+	left: 230px;
+	margin-left: 10px;
+	margin-top: 20px;
+	z-index: 10;
+}
+#title
+{
+	text-align: center;
+	color: FFFFFF;
+	z-index: 5;
+}
+#slider-icon
+{
+	text-decoration: none;
+	position: relative;
+	left: 180px;
+	z-index: 5;
+	color: #FFFFFF;
+	padding-top: 4px;
+	font-family: Baskerville;
+	font-size: 14px;
+	letter-spacing: 5px;
+}
+
+#slider
+{
+	position: relative;
+	width: 500px;
+	background-color: #000000;
+	z-index: 1;
+	border-radius: 15px;
+	padding-top: 3px;
+}
+.link
+{
+	cursor: pointer;
+}
+.link:hover
+{
+	color: #0099CC;
+}
+.fa
+{
+	cursor: pointer;
+}
+
+</style>
+
+</head>
+<body>
+
+	<div id="audio">
+	<p id="title">Music Player</p>
+	<div id="inner">
+	<div id="timeline">
+		<div id="playhead"></div>
+	</div>
+	<div id="play-icon" onmousedown="playAudio()"><i class="fa fa-play-circle fa-2x"></i></div>
+	<div id="pause-icon" onmousedown="playAudio()"><i class="fa fa-pause"></i></div>
+	</div>
+	1<br>
+	2<br><br>
+	<div id="slider"><a href="#header" class="toggle" id="slider-icon"> MUSIC PLAYER</a></div>
+	</div>
+
+	<a name="http://blm.org.in/Media/AdigadigoPralokamunundi.mp3" id="Lord i lift your name" class="link" onmousedown="catchy(this.name,this.id)">Lord i lift your Name</a></br>
+	<a name="He is Exalted.mp3" id="He is Exalted" class="link" onClick="catchy(this.name,this.id)">He is Exalted</a></br>
+	<a name="Great is the lord.mp3" id="Great is the Lord" class="link" onClick="catchy(this.name,this.id)">Great is the Lord</a></br>
+	<a name="Open our Eyes.mp3" id="Open our Eyes" class="link" onClick="catchy(this.name,this.id)">Open our Eyes</a>
+
+<script type="text/javascript">
+	var music=document.createElement("audio");
+	var duration;
+	var play = document.getElementById('play-icon');
+	var pause = document.getElementById('pause-icon');
+	var playhead = document.getElementById('playhead');
+	var timeline=document.getElementById('timeline');
+	var playPercent;
+
+	function catchy(name,id) 
+	{
+		music.src=name;
+		playAudio();
+		//for displaying the title written as the link
+		//document.getElementById('tit').innerHTML = document.getElementById(id).innerHTML;
+
+		//for displaying the id as the title
+		document.getElementById('title').innerHTML = id;
+	}
+	
+function playAudio() 
+{
+	if (music.paused)
+	{
+		music.play();
+		pause.style.display = "block";
+		play.style.display = "none";
+		duration=music.duration;
+		//document.write((duration/60) + ":" + (duration%60));
+	}
+	else
+	{
+		music.pause();
+		pause.style.display = "none";
+		play.style.display = "block";
+	}
+}
+music.addEventListener("timeupdate", timeUpdate, false);
+
+function timeUpdate() {
+	playPercent = 100 * (music.currentTime / music.duration);
+	playhead.style.marginLeft = playPercent + "%";
+}
+
+ timeline.addEventListener("click", function (event) {
+ 
+ 	var newMargLeft = event.pageX - timeline.offsetLeft-450;
+        
+	if (newMargLeft != 0) {
+		playhead.style.marginLeft = newMargLeft + "px";
+	}
+	
+	music.currentTime = music.duration * newMargLeft / 500; //500 is the width of timeline
+}, false);
+ </script>
+<script>
+ $('.toggle').click(function(){
+        if($("#audio").css("top") == "-100px") {
+          $("#audio").animate({top: "0px"}, 1000);
+        } else {
+          $("#audio").animate({top: "-100px"}, 1000);
+        }
+        return false;
+    });
+
+</script>
+</body>
+</html>
