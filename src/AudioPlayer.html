@@ -1,6 +1,6 @@
 <html>
 <head>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <link href="font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <style type="text/css">
 body
@@ -11,24 +11,25 @@ body
 	{
 		position: fixed;
 		top: -100px;
-		width: 500px;
+		width: 300px;
 		height: 100px;
-		left: 450px;
-		background-color: 000000;
+		left: 1000px;
+		background-color: #000000;
 		z-index: 1;
 	}
+
 	#inner
 	{
 		position: absolute;
-		background-color: ddddd0;
+		background-color: #ddddd0;
 		top: 50px;
-		width: 500px;
+		width: 300px;
 		height: 50px;
 		z-index: 1;
 	}
 
 	#timeline{
-	width: 500px;
+	width: 300px;
 	height: 10px;
 	background: #000000;
 	float: left;
@@ -44,7 +45,7 @@ body
 	height: 9px;
 	border-radius: 50%;
 	margin-top: 1px;
-	background-color: ddddd0;
+	background-color: #ddddd0;
 	z-index: 1;
 }
 
@@ -63,7 +64,7 @@ body
 {
 	display: block;
 	position: absolute;
-	left: 226px;
+	left: 130px;
 	margin-left: 10px;
 	margin-top: 15px;
 }
@@ -72,34 +73,49 @@ body
 {
 	display: none;
 	position: absolute;
-	left: 230px;
+	left: 135px;
 	margin-left: 10px;
 	margin-top: 20px;
 	z-index: 10;
 }
+#forward-icon
+{
+	position: absolute;
+	left: 175px;
+	margin-top: 15px;
+	z-index: 10;
+}
+
+#backward-icon
+{
+	position: absolute;
+	left: 105px;
+	margin-top: 15px;
+	z-index: 10px;
+}
 #title
 {
 	text-align: center;
-	color: FFFFFF;
+	color: #FFFFFF;
 	z-index: 5;
 }
 #slider-icon
 {
 	text-decoration: none;
 	position: relative;
-	left: 180px;
+	left: 80px;
 	z-index: 5;
 	color: #FFFFFF;
 	padding-top: 4px;
 	font-family: Baskerville;
-	font-size: 14px;
+	font-size: 10px;
 	letter-spacing: 5px;
 }
 
 #slider
 {
 	position: relative;
-	width: 500px;
+	width: 300px;
 	background-color: #000000;
 	z-index: 1;
 	border-radius: 15px;
@@ -117,30 +133,35 @@ body
 {
 	cursor: pointer;
 }
-
+.fa:hover
+{
+	color: #3366FF;
+}
 </style>
 
 </head>
 <body>
 
 	<div id="audio">
-	<p id="title">Music Player</p>
+	<p id="title">Player</p>
 	<div id="inner">
 	<div id="timeline">
 		<div id="playhead"></div>
 	</div>
+	<div id="backward-icon" onmousedown="backward()"><i class="fa fa-step-backward fa-2x"></i></div>
 	<div id="play-icon" onmousedown="playAudio()"><i class="fa fa-play-circle fa-2x"></i></div>
 	<div id="pause-icon" onmousedown="playAudio()"><i class="fa fa-pause"></i></div>
+	<div id="forward-icon" onmousedown="forward()"><i class="fa fa-step-forward fa-2x"></i></div>
 	</div>
-	1<br>
-	2<br><br>
-	<div id="slider"><a href="#header" class="toggle" id="slider-icon"> MUSIC PLAYER</a></div>
+	<br><br>
+	<br>
+	<div id="slider"><a href="#header" class="toggle" id="slider-icon">MUSIC PLAYER</a></div>
 	</div>
 
-	<a name="http://blm.org.in/Media/AdigadigoPralokamunundi.mp3" id="Lord i lift your name" class="link" onmousedown="catchy(this.name,this.id)">Lord i lift your Name</a></br>
-	<a name="He is Exalted.mp3" id="He is Exalted" class="link" onClick="catchy(this.name,this.id)">He is Exalted</a></br>
-	<a name="Great is the lord.mp3" id="Great is the Lord" class="link" onClick="catchy(this.name,this.id)">Great is the Lord</a></br>
-	<a name="Open our Eyes.mp3" id="Open our Eyes" class="link" onClick="catchy(this.name,this.id)">Open our Eyes</a>
+	<a id="http://blm.org.in/Media/AdigadigoPralokamunundi.mp3" name="" class="link" onmousedown="catchy(this.name,this.id)">1</a></br>
+	<a id="http://blm.org.in/Media/AudioBible/OT/01-The_Book_Of_Genesis_Chapter-001.mp3" name="OT/01-The_Book_Of_Genesis_Chapter-00" class="link" onClick="catchy(this.name,this.id)">1</a></br>
+	<a id="http://blm.org.in/Media/AudioBible/OT/01-The_Book_Of_Genesis_Chapter-002.mp3" name="OT/01-The_Book_Of_Genesis_Chapter-00" class="link" onClick="catchy(this.name,this.id)">2</a></br>
+	<a id="http://blm.org.in/Media/AudioBible/OT/01-The_Book_Of_Genesis_Chapter-003.mp3" name="OT/01-The_Book_Of_Genesis_Chapter-00" class="link" onClick="catchy(this.name,this.id)">3</a>
 
 <script type="text/javascript">
 	var music=document.createElement("audio");
@@ -150,19 +171,18 @@ body
 	var playhead = document.getElementById('playhead');
 	var timeline=document.getElementById('timeline');
 	var playPercent;
+	var url='http://blm.org.in/Media/AudioBible/';//Give the URL of the parent directory where all the audio folders are present
 
-	function catchy(name,id) 
+	function catchy(name,id)
 	{
-		music.src=name;
+		music.src=id;
+		music.name=name;
+		music.id=document.getElementById(id).innerHTML;
 		playAudio();
-		//for displaying the title written as the link
-		//document.getElementById('tit').innerHTML = document.getElementById(id).innerHTML;
-
-		//for displaying the id as the title
-		document.getElementById('title').innerHTML = id;
+		//document.getElementById('title').innerHTML = id+document.getElementById(Genesis).innerHTML;
 	}
 	
-function playAudio() 
+function playAudio()
 {
 	if (music.paused)
 	{
@@ -170,6 +190,7 @@ function playAudio()
 		pause.style.display = "block";
 		play.style.display = "none";
 		duration=music.duration;
+		document.getElementById("title").innerHTML=music.name+''+document.getElementById(music.src).innerHTML;
 		//document.write((duration/60) + ":" + (duration%60));
 	}
 	else
@@ -178,6 +199,42 @@ function playAudio()
 		pause.style.display = "none";
 		play.style.display = "block";
 	}
+}
+
+music.addEventListener("ended",forward,false);
+
+function forward() {
+	var inc=(+music.id);
+	inc=inc+1;
+	var Next=url+music.name+String(inc)+'.mp3';
+	//document.write(c);
+	if (document.getElementById(Next)) {
+		music.src=Next;
+		music.id=String(inc);
+		playAudio();
+	}
+	else
+	{
+		music.
+		document.getElementById("title").innerHTML='choose the next book';
+	}
+}
+
+function backward() {
+	var dec=(+music.id);
+	dec=dec-1;
+	var Previous=url+music.name+String(dec)+'.mp3';
+	if(document.getElementById(Previous))
+	{
+		music.src=Previous;
+		music.id=String(dec);
+		playAudio();
+	}
+	else
+	{
+		document.getElementById("title").innerHTML='invalid selection';
+	}
+	
 }
 music.addEventListener("timeupdate", timeUpdate, false);
 
@@ -188,13 +245,13 @@ function timeUpdate() {
 
  timeline.addEventListener("click", function (event) {
  
- 	var newMargLeft = event.pageX - timeline.offsetLeft-450;
+ 	var newMargLeft = event.pageX - timeline.offsetLeft-1000;
         
 	if (newMargLeft != 0) {
 		playhead.style.marginLeft = newMargLeft + "px";
 	}
 	
-	music.currentTime = music.duration * newMargLeft / 500; //500 is the width of timeline
+	music.currentTime = music.duration * newMargLeft / 300; //500 is the width of timeline
 }, false);
  </script>
 <script>
